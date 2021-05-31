@@ -45,8 +45,8 @@
         position: absolute;
         right: 10px;
         top: 10px;
-        width: 24px;
-        height: 24px;
+        width: 50px;
+        height: 50px;
         font-size: none;
         background: rgb(179, 162, 196);
         border: none;
@@ -63,14 +63,32 @@
         border: none;
         border-radius: 8px;
       }
+      .hoverNotice {
+        display: block;
+        overflow: hidden;
+        height: 0;
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        background-color: white;
+        opacity: 0.5;
+      }
+
+      .hoverNotice.active {
+        display: block;
+        height: 100px;
+      }
     </style>
   </head>
   <body>
     <div class="click">
-      <button class="exit">1</button>
+      <button class="exit">뒤로 가기</button>
       <h1 class="title"></h1>
-      <button>more view</button>
+      <button>더보기</button>
     </div>
+    <div class="hoverNotice"></div>
     <script src="./src/main.js" type="module"></script>
   </body>
 </html>

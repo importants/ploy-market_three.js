@@ -199,23 +199,24 @@ export const model = (() => {
                 controlObject.position.z = 109.9
             }
 
-            if (Xposition) {
+            if (Xposition) { // 물건 클릭 시
                 let box = new THREE.Vector3().copy(Xposition)
                 box.y = yH;
                 this.camera_.position.copy(Xposition) /*copy(this.char.position)*/ ;
-                this.camera_.position.y = 70;
+                this.camera_.position.y += 70;
                 this.camera_.position.x += 60;
                 this.camera_.position.z += 60;
+
                 this.camera_.lookAt(box);
                 //console.log(Xposition)
-            } else {
+            } else { // 카메라 이동 시
                 this.camera_.position.copy(this.char.position) /*copy(this.char.position)*/ ;
                 // this.camera_.position.y = 130;
                 // this.camera_.position.x += 60;
                 // this.camera_.position.z += 60;
-                this.camera_.position.y = 110;
-                this.camera_.position.x += 100;
-                this.camera_.position.z += 100;
+                this.camera_.position.y = 170;
+                this.camera_.position.x += 170;
+                this.camera_.position.z += 170;
                 this.camera_.lookAt(this.char.position);
 
             }

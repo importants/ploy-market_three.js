@@ -1,30 +1,81 @@
 import * as THREE from '../../../three/build/three.module.js';
+
 import {
     item1,
 }
 from './item1.js';
 import {
-    item2,
+    Bus,
 }
-from './item2.js';
+from './car/Bus.js';
 import {
-    item3,
+    YellowTruck,
 }
-from './item3.js';
+from './car/YelloTruck.js';
+import {
+    Truck,
+}
+from './car/Truck.js';
 
 import {
-    item4,
+    Purple,
 }
-from './item4.js';
+from './car/Purple.js';
 
 import {
-    item5,
+    Orange,
 }
-from './item5.js';
+from './car/Orange.js';
 import {
-    item6,
+    Blue,
 }
-from './item6.js';
+from './car/Blue.js';
+
+import {
+    item7,
+} from './item7.js';
+
+import {
+    SpaceShip
+} from "./car/SpaceShip.js";
+
+import {
+    Bench
+} from "./cafe/Bench.js";
+
+import {
+    Chair
+} from "./cafe/Chair.js";
+
+import {
+    Chair2
+} from "./cafe/Chair2.js";
+
+import {
+    ToyMarket
+}
+from './toymarket/ToymarketBuilding.js';
+
+import {
+    Person
+} from "./person/Person.js";
+import {
+    item1_2,
+}
+from './item1_2.js';
+import {
+    item1_3,
+}
+from './item1_3.js';
+import {
+    Pavilion,
+}
+from './plaza/Pavilion.js';
+
+import {
+    Plant,
+}
+from './plaza/Plant.js';
 
 export const items = (() => {
 
@@ -53,30 +104,118 @@ export const items = (() => {
                 objects: this.objects_
             });
 
-            this.item2 = new item2.item2({
+            this.Bus = new Bus.Bus({
                 scene: this.scene_,
                 objects: this.objects_
             });
 
-            this.item3 = new item3.item3({
+            this.YellowTruck = new YellowTruck.YellowTruck({
                 scene: this.scene_,
                 objects: this.objects_
             });
 
-            this.item4 = new item4.item4({
+            this.Truck = new Truck.Truck({
                 scene: this.scene_,
                 objects: this.objects_
             });
 
-            this.item5 = new item5.item5({
+            this.Purple = new Purple.Purple({
                 scene: this.scene_,
                 objects: this.objects_
             });
 
-            this.item6 = new item6.item6({
+            this.Orange = new Orange.Orange({
                 scene: this.scene_,
                 objects: this.objects_
             });
+
+            this.Blue = new Blue.Blue({
+                scene: this.scene_,
+                objects: this.objects_
+            });
+
+            this.item7 = new item7.item7({
+                scene: this.scene_,
+                objects: this.objects_
+            });
+
+            this.SpaceShip = new SpaceShip.SpaceShip({
+                scene: this.scene_,
+                objects: this.objects_
+            });
+
+            this.Bench = new Bench.Bench({
+                scene: this.scene_,
+                objects: this.objects_,
+                position: new THREE.Vector3(20, 3, -70)
+            });
+
+            this.Bench2 = new Bench.Bench({
+                scene: this.scene_,
+                objects: this.objects_,
+                position: new THREE.Vector3(-20, 3, -70)
+            });
+
+            this.ToyMarket = new ToyMarket.ToyMarket({
+                scene: this.scene_,
+                objects: this.objects_,
+                position: new THREE.Vector3(104, -1, -113)
+            })
+
+            this.Plant = new Plant.Plant({
+                scene: this.scene_,
+                objects: this.objects_,
+                position: new THREE.Vector3(-70, 0, 65)
+            })
+
+            this.Plant2 = new Plant.Plant({
+                scene: this.scene_,
+                objects: this.objects_,
+                position: new THREE.Vector3(70, 0, 65)
+            })
+
+            this.Pavilion = new Pavilion.Pavilion({
+                scene: this.scene_,
+                objects: this.objects_,
+                position: new THREE.Vector3(0, 0, 120)
+            })
+
+            this.Person = new Person.Person({
+                scene: this.scene_,
+                objects: this.objects_,
+                position: new THREE.Vector3(100, 0, 120)
+            })
+
+            // this.Chair = new Chair.Chair({
+            //     scene: this.scene_,
+            //     objects: this.objects_
+            // });
+
+            // this.Chair2 = new Chair2.Chair2({
+            //     scene: this.scene_,
+            //     objects: this.objects_
+            // });
+
+
+            const Geo = new THREE.BoxGeometry(10, 10, 10);
+            const Mat = new THREE.MeshPhongMaterial({
+                color: 0XFFDD20,
+            });
+            this.rotationbox = new THREE.Mesh(Geo, Mat);
+            this.oneClick = false;
+
+
+            this.item1_2 = new item1_2.item1_2({
+                scene: this.scene_,
+                objects: this.objects_,
+
+            });
+
+            // this.item1_3 = new item1_3.item1_3({
+            //     scene: this.scene_,
+            //     objects: this.objects_
+            // });
+
 
             this.InitInput_();
         }
@@ -88,12 +227,13 @@ export const items = (() => {
             document.addEventListener("pointermove", (e) => this.onDocumentMouseMove_(e), false);
             document.addEventListener("pointerdown", (e) => this.onDocumentMouseDown_(e), false);
             document.addEventListener("pointerup", (e) => this.onDocumentMouseUp_(e), false);
-            let active = document.getElementsByClassName("click")[0];
-            this.active_ = active;
-            let title = document.getElementsByClassName("title")[0];
-            this.title_ = title;
+            this.active_ = document.getElementsByClassName("click")[0];
+
+            this.title_ = document.getElementsByClassName("title")[0];
+
             let exit = document.getElementsByClassName("exit")[0];
             exit.addEventListener("click", () => this.onClickExit_(), false);
+            this.hoverNotice_ = document.getElementsByClassName("hoverNotice")[0];
         }
 
 
@@ -116,54 +256,80 @@ export const items = (() => {
         }
 
         onDocumentMouseMove_(event) {
-            // event.preventDefault();
-            // this.mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
+            event.preventDefault();
+            this.mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
 
-            // this.raycaster.setFromCamera(this.mouse, this.camera_);
+            this.raycaster.setFromCamera(this.mouse, this.camera_);
+            console.log(this.oneClick)
+            const intersects = this.raycaster.intersectObjects(this.objects_, true);
+            if (intersects.length > 0) {
+                if (!this.oneClick) {
+                    this.hoverNotice_.classList.add("active")
+                    if (intersects[0].object.parent.type == "Group") {
+                        console.log(intersects[0].object.parent.name)
+                        this.hoverNotice_.innerHTML = `${intersects[0].object.parent.name}`;
+                    } else {
+                        console.log(intersects[0].object.name)
+                        this.hoverNotice_.innerHTML = `${intersects[0].object.name}`;
+                    }
 
-            // const intersects = this.raycaster.intersectObjects(this.objects_);
-            // if (intersects.length > 0)
-            //     console.log(intersects[0].object.name)
+                } else {
+                    console.log("click")
+                }
+            } else {
+                this.hoverNotice_.classList.remove("active")
+            }
+
+            // oneclick이 종료가 되면 active 될 수 있게
         }
 
         onDocumentMouseDown_(event) {
             event.preventDefault();
+
             this.mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
 
             this.raycaster.setFromCamera(this.mouse, this.camera_);
 
             const intersects = this.raycaster.intersectObjects(this.objects_, true);
 
+
             if (intersects.length > 0) {
-
-                this.cameraP = intersects[0].object;
-                if (this.center != this.cameraP && this.num == 1) {
-                    this.center.rotation.y = -Math.PI / 2;
-                }
-                this.num = 1;
-                this.center = intersects[0].object;
-
-                this.active_.classList.add("active");
-                if (intersects[0].object.parent.type == "Group") {
-                    this.cameraP = intersects[0].object.parent;
-                    this.center = intersects[0].object.parent;
-                    this.title_.innerHTML = `${intersects[0].object.parent.name}`;
-                } else {
+                if (!this.oneClick && intersects[0].object) { //한번만 클릭
+                    this.oneClick = true; // 클릭 되었을 때
+                    this.hoverNotice_.classList.remove("active")
                     this.cameraP = intersects[0].object;
+                    this.num = 1;
                     this.center = intersects[0].object;
-                    this.title_.innerHTML = `${intersects[0].object.name}`;
-                }
-                this.position = new THREE.Vector3().copy(this.cameraP.position);
 
+                    this.active_.classList.add("active");
+                    if (intersects[0].object.parent.type == "Group") {
+                        this.cameraP = intersects[0].object.parent;
+                        this.center = intersects[0].object.parent;
+                        this.title_.innerHTML = `${intersects[0].object.parent.name}`;
+                    } else {
+                        this.cameraP = intersects[0].object;
+                        this.center = intersects[0].object;
+                        this.title_.innerHTML = `${intersects[0].object.name}`;
+                    }
+                    this.cameraP.position.y += 70;
+                    this.position = new THREE.Vector3().copy(this.cameraP.position);
+                }
             }
+
         }
 
         onDocumentMouseUp_(event) {}
 
         onClickExit_() {
             this.active_.classList.remove("active");
+
             if (this.cameraP) {
-                this.cameraP.rotation.y = -Math.PI / 2;
+                this.cameraP.quaternion.copy(this.rotationbox.quaternion)
+                if (this.oneClick) {
+                    this.cameraP.position.y -= 70;
+                    this.oneClick = false;
+                }
+                //this.cameraP.rotation.y = -Math.PI / 2;
             }
 
             this.cameraP = null;

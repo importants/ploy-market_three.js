@@ -5,7 +5,7 @@ import {
 
 import {
   ground
-} from "./three3/ground.js"
+} from "./ground.js"
 
 import {
   items
@@ -47,7 +47,7 @@ class main_three {
 
 
     this.scene_ = new THREE.Scene();
-    this.scene_.background = new THREE.Color("#0D0518");
+    this.scene_.background = new THREE.Color("#FBF1E3");
 
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -67,14 +67,14 @@ class main_three {
     //this.scene_.add(ambientLight);
 
     let directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    directionalLight.position.set(50, 80, 50);
+    directionalLight.position.set(300, 300, 300);
 
     directionalLight.shadow.mapSize.width = 2048;
     directionalLight.shadow.mapSize.height = 2048;
     this.scene_.add(directionalLight);
     this.scene_.add(directionalLight.target);
 
-    var d = 80;
+    var d = 200;
     directionalLight.castShadow = true;
     directionalLight.shadow.camera.left = -d;
     directionalLight.shadow.camera.right = d;
@@ -84,14 +84,18 @@ class main_three {
     directionalLight.shadow.camera.near = 0.01;
     directionalLight.shadow.camera.far = 10000;
 
+    // this.helper = new THREE.DirectionalLightHelper(directionalLight, 10)
+    // this.scene_.add(this.helper)
+    // this.shadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
+    // this.scene_.add(this.shadowHelper)
 
 
 
     document.body.appendChild(this.renderer.domElement);
 
     // 축 보기
-    // const axesHelper = new THREE.AxesHelper(100);
-    // this.scene_.add(axesHelper);
+    const axesHelper = new THREE.AxesHelper(100);
+    this.scene_.add(axesHelper);
 
     //this.previousRAF_ = null;
 
@@ -111,6 +115,11 @@ class main_three {
       scene: this.scene_,
       camera: this.camera,
       objects: this.objects
+    })
+    this.ground = new ground.ground({
+      scene: this.scene_,
+      objects: this.objects,
+      camera: this.camera,
     })
 
 
@@ -203,8 +212,8 @@ class main_three {
 
   _Step(timeElapsed) {
     const timeElapsedS = timeElapsed * 0.001;
-    let a = this.items.Update(timeElapsedS);
-    let b = this.items.getHeigt();
+    let a = this.items.Update(timeElapsedS); // 아이템 값
+    let b = this.items.getHeigt(); // y 값
     this.model.Update(a, b);
     // if (this._controls) {
     //   // this._controls.Update(timeElapsedS);
