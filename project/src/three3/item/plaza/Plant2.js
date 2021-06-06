@@ -48,6 +48,7 @@ export const Plant2 = (() => {
                 this.objects_.push(fbx)
                 this.scene_.add(fbx);
                 this.fbx = fbx
+                fbx.name = "Plant2"
             });
 
         }

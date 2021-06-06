@@ -29,7 +29,7 @@ export const Purple = (() => {
             manager.addHandler(/\.tga$/i, new TGALoader());
 
             const loader = new FBXLoader(manager);
-            loader.setPath('./src/three/fbx/');
+            loader.setPath('./src/three/fbx/car/');
             loader.load('4.fbx', (fbx) => {
                 fbx.scale.setScalar(1.5);
                 fbx.traverse(c => {

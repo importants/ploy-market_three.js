@@ -29,7 +29,7 @@ export const SpaceShip = (() => {
             manager.addHandler(/\.tga$/i, new TGALoader());
 
             const loader = new FBXLoader(manager);
-            loader.setPath('./src/three/fbx/');
+            loader.setPath('./src/three/fbx/car/');
             loader.load('SpaceShip.fbx', (fbx) => {
                 fbx.scale.setScalar(0.3);
                 fbx.traverse(c => {

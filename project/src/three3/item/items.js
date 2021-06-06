@@ -1,9 +1,6 @@
 import * as THREE from '../../../three/build/three.module.js';
 
-import {
-    item1,
-}
-from './item1.js';
+
 import {
     Bus,
 }
@@ -60,9 +57,9 @@ import {
     Person
 } from "./person/Person.js";
 import {
-    item1_2,
+    Cafe,
 }
-from './item1_2.js';
+from './cafe/Cafe.js';
 import {
     item1_3,
 }
@@ -99,10 +96,6 @@ export const items = (() => {
         }
 
         LoadModel_() {
-            this.item1 = new item1.item1({
-                scene: this.scene_,
-                objects: this.objects_
-            });
 
             this.Bus = new Bus.Bus({
                 scene: this.scene_,
@@ -205,17 +198,11 @@ export const items = (() => {
             this.oneClick = false;
 
 
-            this.item1_2 = new item1_2.item1_2({
+            this.Cafe = new Cafe.Cafe({
                 scene: this.scene_,
                 objects: this.objects_,
 
             });
-
-            // this.item1_3 = new item1_3.item1_3({
-            //     scene: this.scene_,
-            //     objects: this.objects_
-            // });
-
 
             this.InitInput_();
         }
@@ -228,12 +215,13 @@ export const items = (() => {
             document.addEventListener("pointerdown", (e) => this.onDocumentMouseDown_(e), false);
             document.addEventListener("pointerup", (e) => this.onDocumentMouseUp_(e), false);
             this.active_ = document.getElementsByClassName("click")[0];
-
             this.title_ = document.getElementsByClassName("title")[0];
-
             let exit = document.getElementsByClassName("exit")[0];
             exit.addEventListener("click", () => this.onClickExit_(), false);
             this.hoverNotice_ = document.getElementsByClassName("hoverNotice")[0];
+            this.btnBox = document.getElementsByClassName("btnBox2")[0]
+            this.btnBox.classList.add("active")
+
         }
 
 
@@ -260,19 +248,11 @@ export const items = (() => {
             this.mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
 
             this.raycaster.setFromCamera(this.mouse, this.camera_);
-            console.log(this.oneClick)
             const intersects = this.raycaster.intersectObjects(this.objects_, true);
+
             if (intersects.length > 0) {
                 if (!this.oneClick) {
                     this.hoverNotice_.classList.add("active")
-                    if (intersects[0].object.parent.type == "Group") {
-                        console.log(intersects[0].object.parent.name)
-                        this.hoverNotice_.innerHTML = `${intersects[0].object.parent.name}`;
-                    } else {
-                        console.log(intersects[0].object.name)
-                        this.hoverNotice_.innerHTML = `${intersects[0].object.name}`;
-                    }
-
                 } else {
                     console.log("click")
                 }
@@ -300,7 +280,7 @@ export const items = (() => {
                     this.cameraP = intersects[0].object;
                     this.num = 1;
                     this.center = intersects[0].object;
-
+                    this.btnBox.classList.remove("active")
                     this.active_.classList.add("active");
                     if (intersects[0].object.parent.type == "Group") {
                         this.cameraP = intersects[0].object.parent;
@@ -322,7 +302,7 @@ export const items = (() => {
 
         onClickExit_() {
             this.active_.classList.remove("active");
-
+            this.btnBox.classList.add("active")
             if (this.cameraP) {
                 this.cameraP.quaternion.copy(this.rotationbox.quaternion)
                 if (this.oneClick) {

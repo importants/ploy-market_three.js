@@ -88,6 +88,10 @@ export const model = (() => {
             }
         }
 
+        ChangePos(placePos) {
+            this.char.position.copy(placePos)
+        }
+
         /* animation */
         Update(Xposition, yH) {
             const timeElapsedS = 0.05;
@@ -184,17 +188,17 @@ export const model = (() => {
 
             this._position.copy(controlObject.position);
 
-            if (controlObject.position.x < -80) {
+            if (controlObject.position.x < -80 && controlObject.position.x > -90) {
                 console.log("warning")
                 controlObject.position.x = -79.9
-            } else if (controlObject.position.x > 80) {
+            } else if (controlObject.position.x > 80 && controlObject.position.x < 90) {
                 console.log("warning")
                 controlObject.position.x = 79.9
             }
-            if (controlObject.position.z < -110) {
+            if (controlObject.position.z < -110 && controlObject.position.z > -120) {
                 console.log("warning")
                 controlObject.position.z = -109.9
-            } else if (controlObject.position.z > 110) {
+            } else if (controlObject.position.z > 110 && controlObject.position.z < 120) {
                 console.log("warning")
                 controlObject.position.z = 109.9
             }
@@ -218,7 +222,6 @@ export const model = (() => {
                 this.camera_.position.x += 170;
                 this.camera_.position.z += 170;
                 this.camera_.lookAt(this.char.position);
-
             }
 
 

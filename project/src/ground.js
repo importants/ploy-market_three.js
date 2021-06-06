@@ -1,21 +1,27 @@
 import * as THREE from '../three/build/three.module.js';
 
+
+import {
+    CarCenter,
+}
+from './three3/item/main/CarCenter.js';
+
 import {
     tree1,
 }
 
-from './three3/item/tree1.js';
+from './three3/item/main/tree1.js';
 import {
     tree2,
 }
-from './three3/item/tree2.js';
+from './three3/item/main/tree2.js';
 import {
     tree3,
 }
-from './three3/item/tree3.js';
+from './three3/item/main/tree3.js';
 import {
     Road
-} from "./three3/item/Road.js";
+} from "./three3/item/main/Road.js";
 
 import {
     Plant2
@@ -110,25 +116,16 @@ export const ground = (() => {
             });
 
 
-            const FrameGeo = new THREE.PlaneGeometry(1500, 1500);
-            const FrameMat = new THREE.MeshPhongMaterial({
-                color: 0X35312B,
-            });
-            const Frame = new THREE.Mesh(FrameGeo, FrameMat);
-            this.scene_.add(Frame);
-            Frame.rotation.x = -Math.PI / 2;
-            Frame.position.y = -600;
-            Frame.receiveShadow = true;
 
-            const exGeo = new THREE.BoxGeometry(300, 119, 10);
+            const exGeo = new THREE.BoxGeometry(300, 119, 50);
             const exMat = new THREE.MeshPhongMaterial({
                 color: 0X1E854D,
             });
-            const exGeo1 = new THREE.BoxGeometry(300, 52, 10);
+            const exGeo1 = new THREE.BoxGeometry(300, 52, 50);
             const ex1Mat = new THREE.MeshPhongMaterial({
                 color: 0X4B4B4B,
             });
-            const exGeo2 = new THREE.BoxGeometry(300, 129, 10);
+            const exGeo2 = new THREE.BoxGeometry(300, 129, 50);
             const ex2Mat = new THREE.MeshPhongMaterial({
                 color: 0X816653,
             });
@@ -136,37 +133,37 @@ export const ground = (() => {
             const ex = new THREE.Mesh(exGeo, exMat);
             this.scene_.add(ex);
             ex.rotation.x = -Math.PI / 2;
-            ex.position.y = -6;
+            ex.position.y = -26;
             ex.position.z = 90;
             ex.receiveShadow = true;
 
             const ex1 = new THREE.Mesh(exGeo1, ex1Mat);
             this.scene_.add(ex1);
             ex1.rotation.x = -Math.PI / 2;
-            ex1.position.y = -6;
+            ex1.position.y = -26;
             ex1.position.z = 5;
             ex1.receiveShadow = true;
 
             const ex2 = new THREE.Mesh(exGeo2, ex2Mat);
             this.scene_.add(ex2);
             ex2.rotation.x = -Math.PI / 2;
-            ex2.position.y = -6;
+            ex2.position.y = -26;
             ex2.position.z = -85;
             ex2.receiveShadow = true;
 
 
 
-            const ex3Geo = new THREE.BoxGeometry(300, 300, 800);
-            const ex3Mat = new THREE.MeshPhongMaterial({
-                color: 0X6D6D6D,
+            // const ex3Geo = new THREE.BoxGeometry(300, 300, 800);
+            // const ex3Mat = new THREE.MeshPhongMaterial({
+            //     color: 0X6D6D6D,
 
-            });
+            // });
 
-            const ex3 = new THREE.Mesh(ex3Geo, ex3Mat);
-            this.scene_.add(ex3);
-            ex3.rotation.x = -Math.PI / 2;
-            ex3.position.y = -412;
-            ex3.receiveShadow = true;
+            // const ex3 = new THREE.Mesh(ex3Geo, ex3Mat);
+            // this.scene_.add(ex3);
+            // ex3.rotation.x = -Math.PI / 2;
+            // ex3.position.y = -412;
+            // ex3.receiveShadow = true;
 
             const roadGeo = new THREE.BoxGeometry(300, 60, 1);
             const roadMat = new THREE.MeshPhongMaterial({
@@ -193,6 +190,11 @@ export const ground = (() => {
             Yellow1.position.z = 5;
 
 
+
+            this.CarCenter = new CarCenter.CarCenter({
+                scene: this.scene_,
+                objects: this.objects_
+            });
 
 
             this.tree1 = new tree1.tree1({
@@ -317,62 +319,7 @@ export const ground = (() => {
                 position: new THREE.Vector3(70, 0, 80),
             });
 
-            this.Building1 = new Building1.Building1({
-                scene: this.scene_,
-                objects: this.objects_,
-                position: new THREE.Vector3(-400, -600, 300)
-            });
 
-            this.Building2 = new Building2.Building2({
-                scene: this.scene_,
-                objects: this.objects_,
-                position: new THREE.Vector3(-1200, -1000, 200)
-            });
-
-            this.Building3 = new Building3.Building3({
-                scene: this.scene_,
-                objects: this.objects_,
-                position: new THREE.Vector3(-600, -600, -70)
-            });
-
-            this.Building4 = new Building4.Building4({
-                scene: this.scene_,
-                objects: this.objects_,
-                position: new THREE.Vector3(-600, -1000, -300)
-
-            });
-
-
-
-            this.Building5 = new Building5.Building5({
-                scene: this.scene_,
-                objects: this.objects_,
-                position: new THREE.Vector3(-500, -600, -500)
-            });
-            //
-            this.Building6 = new Building6.Building6({
-                scene: this.scene_,
-                objects: this.objects_,
-                position: new THREE.Vector3(-150, -1000, -500)
-            });
-
-            this.Building7 = new Building7.Building7({
-                scene: this.scene_,
-                objects: this.objects_,
-                position: new THREE.Vector3(-0, -600, -500)
-            });
-
-            this.Building8 = new Building8.Building8({
-                scene: this.scene_,
-                objects: this.objects_,
-                position: new THREE.Vector3(300, -500, -300)
-            });
-
-            this.Building9 = new Building9.Building9({
-                scene: this.scene_,
-                objects: this.objects_,
-                position: new THREE.Vector3(-300, -700, -500)
-            });
 
 
 

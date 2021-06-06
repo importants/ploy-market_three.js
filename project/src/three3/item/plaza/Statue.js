@@ -47,6 +47,7 @@ export const Statue = (() => {
                 fbx.position.copy(this.position_);
                 this.objects_.push(fbx)
                 fbx.position.y += 2;
+                fbx.name = "statue";
                 this.scene_.add(fbx);
                 this.fbx = fbx
             });

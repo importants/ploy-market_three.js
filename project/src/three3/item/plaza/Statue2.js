@@ -45,7 +45,8 @@ export const Statue2 = (() => {
                 }
                 //fbx.rotation.y = Math.PI / 2;
                 fbx.position.copy(this.position_);
-                this.objects_.push(fbx)
+                this.objects_.push(fbx);
+                fbx.name = "statue2";
                 this.scene_.add(fbx);
                 this.fbx = fbx
 

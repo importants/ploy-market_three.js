@@ -12,15 +12,19 @@ import {
 } from "./three3/item/items.js"
 
 import {
+  Market1
+} from "./Market1.js";
+
+import {
+  Market2
+} from "./Market2.js";
+import {
   model
 } from "./three3/model.js"
 
 import {
   GUI
 } from "../three/examples/jsm/libs/dat.gui.module.js"
-
-
-
 
 class main_three {
 
@@ -34,7 +38,6 @@ class main_three {
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
     this.objects = [];
-
     this.camera = new THREE.PerspectiveCamera(
       60,
       window.innerWidth / window.innerHeight,
@@ -45,30 +48,36 @@ class main_three {
     this.camera.lookAt(0, 0, 0);
     //this.control = new OrbitControls(this.scene_, this.camera);
 
-
     this.scene_ = new THREE.Scene();
-    this.scene_.background = new THREE.Color("#FBF1E3");
+    // this.scene_.background = new THREE.Color("#FBF1E3");
+
+    {
+      const color = 0xFFFFFF; // 하양
+      const near = 700;
+      const far = 1000;
+      this.scene_.fog = new THREE.Fog(color, near, far);
+    }
 
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
     });
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setClearColor(0x999999, 1);
-    //this.renderer.outputEncoding = THREE.sRGBEncoding;
+    this.renderer.setClearColor(0xECFDFF, 1);
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping; // toneMapping 속성
+    this.renderer.toneMappingExposure = 1.2; // 렌더러의 밝기 속성
+    this.num = 2;
 
     // lights
 
-    const ambientLight = new THREE.AmbientLight(0x606060, 0.7);
-    //this.scene_.add(ambientLight);
+    const ambientLight = new THREE.AmbientLight(0x606060, 1);
+    this.scene_.add(ambientLight);
 
-    let directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    directionalLight.position.set(300, 300, 300);
-
+    let directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    //directionalLight.position.set(300, 300, 300);
     directionalLight.shadow.mapSize.width = 2048;
     directionalLight.shadow.mapSize.height = 2048;
     this.scene_.add(directionalLight);
@@ -80,31 +89,10 @@ class main_three {
     directionalLight.shadow.camera.right = d;
     directionalLight.shadow.camera.top = d;
     directionalLight.shadow.camera.bottom = -d;
-
     directionalLight.shadow.camera.near = 0.01;
     directionalLight.shadow.camera.far = 10000;
 
-    // this.helper = new THREE.DirectionalLightHelper(directionalLight, 10)
-    // this.scene_.add(this.helper)
-    // this.shadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
-    // this.scene_.add(this.shadowHelper)
-
-
-
     document.body.appendChild(this.renderer.domElement);
-
-    // 축 보기
-    const axesHelper = new THREE.AxesHelper(100);
-    this.scene_.add(axesHelper);
-
-    //this.previousRAF_ = null;
-
-
-
-    // mesh 불러오기
-    // this.center = new ground.ground({
-    //   scene: this.scene_
-    // });
 
     this.model = new model.model({
       scene: this.scene_,
@@ -122,67 +110,72 @@ class main_three {
       camera: this.camera,
     })
 
+    this.Market1 = new Market1.Market1({
+      scene: this.scene_,
+      objects: this.objects,
+      camera: this.camera,
+    })
 
-
+    this.Market2 = new Market2.Market2({
+      scene: this.scene_,
+      objects: this.objects,
+      camera: this.camera,
+    })
 
     this._mixers = [];
     this._previousRAF = null;
     this.InitInput_();
-
     this.render();
-
   }
-
 
   InitInput_() {
-    document.addEventListener("keydown", (e) => this.OnKeyDown_(e), false);
-    document.addEventListener("keyup", (e) => this.OnKeyUp_(e), false);
-    //document.addEventListener("pointermove", (e) => this.onDocumentMouseMove_(e), false);
-    //document.addEventListener("pointerdown", (e) => this.onDocumentMouseDown_(e), false);
-    //document.addEventListener("pointerup", (e) => this.onDocumentMouseUp_(e), false);
     window.addEventListener("resize", (e) => this.onWindowResize_(e), false);
+    let leftBtn = document.getElementsByClassName("left")[0]
+    let rightBtn = document.getElementsByClassName("right")[0]
+    this.place = new THREE.Vector3(0, 0, 0);
+    rightBtn.addEventListener("click", () => {
+      this.num++;
+      if (this.num == 3)
+        this.num = 0;
+      console.log(this.num)
+      switch (this.num) {
+        case 0:
+          this.place.copy(new THREE.Vector3(2500, 0, -2500));
+          break;
+        case 1:
+          this.place.copy(new THREE.Vector3(-2500, 0, 2500));
+          break;
+        case 2:
+          this.place.copy(new THREE.Vector3(0, 0, 0));
+          break;
+        default:
+          this.place.copy(new THREE.Vector3(0, 0, 0));
+          break;
+      }
+      this.model.ChangePos(this.place)
+    }, false)
+    leftBtn.addEventListener("click", () => {
+      this.num--;
+      if (this.num == -1)
+        this.num = 2;
+      console.log(this.num)
+      switch (this.num) {
+        case 0:
+          this.place.copy(new THREE.Vector3(2500, 0, -2500));
+          break;
+        case 1:
+          this.place.copy(new THREE.Vector3(-2500, 0, 2500));
+          break;
+        case 2:
+          this.place.copy(new THREE.Vector3(0, 0, 0));
+          break;
+        default:
+          this.place.copy(new THREE.Vector3(0, 0, 0));
+          break;
+      }
+      this.model.ChangePos(this.place)
+    }, false)
   }
-
-
-  OnKeyDown_(event) {
-    switch (event.keyCode) {
-      case 49:
-        break;
-      case 50:
-        break;
-    }
-  }
-
-  OnKeyUp_(event) {
-    switch (event.keyCode) {
-      case 65:
-        break;
-      case 68:
-        break;
-    }
-  }
-
-  onDocumentMouseMove_(event) {
-    event.preventDefault();
-
-    this.mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
-
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-
-    const intersects = this.raycaster.intersectObjects(this.objects);
-    //if (intersects.name == 'ex')
-    if (intersects.length > 0)
-      console.log(intersects[0].object.name)
-  }
-
-  onDocumentMouseDown_(event) {
-
-  }
-
-  onDocumentMouseUp_(event) {
-
-  }
-
 
   onWindowResize_() {
     this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -191,8 +184,6 @@ class main_three {
       window.innerWidth, window.innerHeight
     );
   }
-
-
 
   render() {
     requestAnimationFrame((t) => {
@@ -203,9 +194,7 @@ class main_three {
       this.render();
       this.renderer.render(this.scene_, this.camera);
       this._Step(t - this._previousRAF);
-      this.rotation_();
       this.previousRAF_ = t;
-
       //this.control.update();
     });
   }
@@ -214,22 +203,9 @@ class main_three {
     const timeElapsedS = timeElapsed * 0.001;
     let a = this.items.Update(timeElapsedS); // 아이템 값
     let b = this.items.getHeigt(); // y 값
-    this.model.Update(a, b);
-    // if (this._controls) {
-    //   // this._controls.Update(timeElapsedS);
-    // }
-
+    this.model.Update(a, b, this.place);
   }
 
-  onDocumentKeyDown(event) {
-
-
-  }
-
-
-  rotation_() {
-
-  }
 }
 
 let _APP = null;
@@ -237,14 +213,3 @@ let _APP = null;
 window.addEventListener("DOMContentLoaded", () => {
   _APP = new main_three();
 });
-
-let btn = document.getElementsByClassName("click")[0];
-
-
-
-
-
-function clearCanvas() {
-  var canvas = document.querySelector("canvas");
-  document.body.removeChild(canvas);
-}
